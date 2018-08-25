@@ -1,12 +1,18 @@
 import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
+import { reducer as form } from 'redux-form'
 import user from './user'
 import projects from './projects'
-import benefactors from './benefactors'
+import donations from './donations'
+import provider from './provider'
+import accounts from './accounts'
 
 export default combineReducers({
-    routing,
-    user,
-    projects,
-    benefactors,
+  routing,
+  user,
+  projects,
+  donations,
+  form,
+  provider,
+  accounts
 })
