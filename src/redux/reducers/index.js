@@ -6,6 +6,8 @@ import projects from './projects'
 import donations from './donations'
 import provider from './provider'
 import accounts from './accounts'
+import contracts from './contracts'
+import notification from './notification'
 
 export default combineReducers({
   routing,
@@ -14,5 +16,6 @@ export default combineReducers({
   donations,
   form,
   provider,
-  accounts
+  accounts,
+  notification,
 })

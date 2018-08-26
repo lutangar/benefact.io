@@ -3,6 +3,10 @@ import DonationForm from '../../components/form/DonationFormContainer'
 import Loader from '../../components/Loader'
 
 class Project extends Component {
+  componentDidMount () {
+    // this.props.fetchDonations()
+  }
+
   get hasDonations () {
     return !this.props.donationsFetching && this.props.donations.length > 0
   }
@@ -12,7 +16,7 @@ class Project extends Component {
       <main className='container'>
         <div className='pure-g'>
           <div className='pure-u-1-1'>
-            <h1>{this.props.projectHash}</h1>
+            <h1>{this.props.projectName}</h1>
             <p>{this.props.description}</p>
             <em>{this.props.currentAmount}/{this.props.amount}</em>
             <dl>
@@ -32,7 +36,7 @@ class Project extends Component {
               <p>No benefactors have given to the <strong>{this.props.name}</strong> project so far.</p>
             }
             <h2>{this.hasDonations ? 'Donate' : 'Be the first to donate!'}</h2>
-            <DonationForm />
+            <DonationForm projectNumber={this.props.projectNumber} />
           </div>
         </div>
       </main>

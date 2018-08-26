@@ -64,3 +64,5 @@ export const getDefinition = name => state => {
 
   return definition;
 };
+
+export const EVENT = eventName => `EVENT_${eventName.toString().toUpperCase()}`;

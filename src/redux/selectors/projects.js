@@ -3,7 +3,7 @@ import { hoursToMilliseconds } from '../../services/utils'
 
 export const getId = (state, props) => props.params.id
 
-export const getProjects = state => state.projects.items
+export const getProjects = state => Object.values(state.projects.items)
 export const getLastFetched = state => state.projects.lastFetched
 
 export const getProject = createSelector(

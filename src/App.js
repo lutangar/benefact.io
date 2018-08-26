@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
+import Notification from './components/Notification'
 
 // UI Components
 import LoginButtonContainer from './user/ui/loginbutton/LoginButtonContainer'
@@ -15,6 +16,7 @@ import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
+import { isProviderLoaded } from './redux/selectors'
 
 class App extends Component {
   componentDidMount () {
@@ -23,6 +25,7 @@ class App extends Component {
   }
 
   render () {
+    console.log(this.props)
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
         <li className='pure-menu-item'>
@@ -51,9 +54,10 @@ class App extends Component {
           </ul>
         </nav>
         {this.props.children}
+        {this.props.notification && <Notification>{this.props.notification}</Notification>}
       </div>
     )
   }
 }
 
-export default connect(() => ({}), { fetchProjects, loadProvider })(App)
+export default connect((state) => ({ providerLoaded: isProviderLoaded(state), notification: state.notification }), { fetchProjects, loadProvider })(App)

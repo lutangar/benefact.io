@@ -3,6 +3,7 @@ const initialState = {
 }
 
 const userReducer = (state = initialState, action) => {
+  console.log(action.type, action.payload);
   if (action.type === 'USER_LOGGED_IN') {
     return Object.assign({}, state, {
       data: action.payload

@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
-import { getId as getProjectId } from './projects'
+import { getId as getProjectId, getLastFetched } from './projects'
+import { hoursToMilliseconds } from '../../services/utils'
 
 export const getDonations = state => state.donations.items
 
@@ -15,6 +16,13 @@ export const getProjectDonationsTotal = createSelector(
 )
 
 export const areDonationsFetching = state => state.donations.fetching > 0
+
+export const getDonationsLastFetched = state => state.donations.lastFetched
+
+export const areDonationsStale = createSelector(
+  getLastFetched,
+  lastFetched => lastFetched ? (Date.now() > lastFetched + hoursToMilliseconds(0.2)) : true
+)
 
 export const getProjectBenefactorsCount = createSelector(
   getProjectDonations,

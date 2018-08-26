@@ -14,14 +14,14 @@ class Home extends Component {
             {this.props.hasProjects &&
               <ul>
                 {this.props.projects.map(project =>
-                  <li key={`project[${project.projectHash}]`}><Link to={`/project/${project.projectHash}`}>{project.description} {project.goal}</Link></li>
+                  <li key={`project[${project.projectNumber}]`}><Link to={`/project/${project.projectHash}`}>{project.name}</Link></li>
                 )}
               </ul>
             }
             {!this.props.hasProjects && <p>There are no projects yet.</p>}
 
             <h3>{this.props.hasProjects ? 'Submit your project' : 'Be the first submit a project!'}</h3>
-            <ProjectForm />
+            <ProjectForm onSubmit={this.props.createProject} />
           </div>
         </div>
       </main>
