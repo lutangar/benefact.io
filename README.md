@@ -51,7 +51,11 @@ npm start
 
 ## User stories
 
-<!-- @todo -->
+A user can opens the web app and see list of existing projects.
+
+A user can create a new project and see its project added to the list.
+
+<!-- @todo
 An administrator opens the web app. The web app reads the address and identifies that the user is an admin,
 showing them admin only functions, such as managing store owners. An admin adds an address to the list
 of approved store owners, so if the owner of that address logs into the app, they have access to the
@@ -69,6 +73,7 @@ A shopper logs into the app. The web app does not recognize their address so the
 They can see a list of products offered by the store, including their price and quantity.
 Shoppers can purchase a product, which will debit their account and send it to the store.
 The quantity of the item in the store’s inventory will be reduced by the appropriate amount.
+-->
 
 ## Testing
 

@@ -1,9 +1,12 @@
 import { connect } from 'react-redux'
 import LoginButton from './LoginButton'
 import { loginUser } from './LoginButtonActions'
+import { getAccount } from '../../../redux/selectors/accounts'
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    account: getAccount(state)
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

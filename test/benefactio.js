@@ -1,5 +1,6 @@
 const { assertRevert } = require('./helpers/assertRevert')
 const expectEvent = require('./helpers/expectEvent')
+let BigNumber = require('../node_modules/bignumber.js')
 
 let Benefactio = artifacts.require('./Benefactio.sol'),
   Owned = artifacts.require('./basic/Owned.sol'),
@@ -7,9 +8,9 @@ let Benefactio = artifacts.require('./Benefactio.sol'),
 
 let eth = web3.eth,
   owner = eth.accounts[0],
-  benefactor = eth.accounts[1],
-  actor1 = eth.accounts[2],
-  actor2 = eth.accounts[3],
+  actor = eth.accounts[1],
+  benefactor1 = eth.accounts[2],
+  benefactor2 = eth.accounts[3],
   unknown = eth.accounts[4]
 
 const timeTravel = function (time) {
@@ -39,24 +40,25 @@ const mineBlock = function () {
 }
 
 let printBalance = async function () {
-  const ownerBalance = eth.getBalance(owner)
-  const benefactorBalance = eth.getBalance(benefactor)
-  const actor1Balance = eth.getBalance(actor1)
-  const actor2Balance = eth.getBalance(actor2)
-
   let contract = await Benefactio.deployed()
-  let balance = await contract.balanceOf.call(owner)
-  console.log('Contract Balance: ', web3.fromWei(ownerBalance, 'ether').toString(), ' ETHER')
+
+  const contractBalance = eth.getBalance(contract.address)
+  const actorBalance = eth.getBalance(actor)
+  const benefactor1Balance = eth.getBalance(benefactor1)
+  const benefactor2Balance = eth.getBalance(benefactor2)
+
+  console.log('Contract Balance:', contractBalance.toString(), 'wei')
+  console.log('Actor Balance:', actorBalance.toString(), 'wei')
+  console.log('Benefactor1 Balance:', benefactor1Balance.toString(), 'wei')
+  console.log('Benefactor2 Balance:', benefactor2Balance.toString(), 'wei')
 }
 
 contract('Benefactio', function (accounts) {
-  it('Should create the dApp with empty projects and owner as only benefactor', async () => {
+  it('Should create a disabled dApp', async () => {
     let contract = await Benefactio.deployed()
     let status = await contract.status()
-    let benefactor = await contract.benefactors(1)
 
     assert.equal(status, false, "The dApp shoul'nt be active")
-    assert.equal(benefactor[1], 'founder', 'The default benefactor should be founder')
   })
 
   it('Should only be activated or disabled by owner', async () => {
@@ -72,37 +74,11 @@ contract('Benefactio', function (accounts) {
     assertRevert(contract.close({from: unknown}))
   })
 
-  it('Should add an external benefactor', async () => {
+  it('An ethereum address add a new project', async () => {
     let contract = await Benefactio.deployed()
+    await contract.newProject(1000, 'test', 'test', 0x123, { from: actor })
 
-    await expectEvent.inTransaction(
-      contract.addBenefactor(benefactor, 'test', { from: owner }),
-      'BenefactorsChanged',
-      { benefactor: benefactor, isBenefactor: true }
-    )
-
-    let bene = await contract.benefactorId(benefactor)
-    assert.equal(bene.toNumber(), 2, 'The first external benefactor should be 2')
-  })
-
-  it('Should remove owner benefactor', async () => {
-    let contract = await Benefactio.deployed()
-
-    await expectEvent.inTransaction(
-      contract.removeBenefactor(owner, { from: owner }),
-      'BenefactorsChanged',
-      { benefactor: owner, isBenefactor: false }
-    )
-
-    let bene = await contract.benefactors(1)
-    assert.equal(bene[0], benefactor, 'The first external benefactor should be 1')
-  })
-
-  it('A benefactor should add a new project', async () => {
-    let contract = await Benefactio.deployed()
-    await contract.newProject(1000, 'test', 'test', 0x123, { from: benefactor })
-
-    assertRevert(contract.newProject(1000, 'test', 'test', 0x123, { from: unknown }))
+    assert.equal((await contract.projects(0))[0], actor, "Address should be the actor one");
   })
 
   it('A project should be activated before donation', async () => {
@@ -116,7 +92,34 @@ contract('Benefactio', function (accounts) {
     assert.equal(project[8], true, 'The project should be approved')
   })
 
-  it('A donation should be handled', async () => {
+  it('Donations should be handled', async () => {
+    let contract = await Benefactio.deployed()
 
+    printBalance()
+
+    await contract.makeDonation(0, "This is a support message", { from: benefactor1, value: 100 })
+
+    let project = await contract.projects(0)
+    //assert.equal(project[1], 100, "The project should contain 100 wei")
+    //assert.equal(project[5], 1, "The project should have one donation")
+
+    printBalance()
+
+    await contract.makeDonation(0, "This is a support message", { from: benefactor2, value: 900 })
+    //assert.equal(project[1], 1000, "The project should contain 100 wei")
+    //assert.equal(project[5], 2, "The project should have two donation")
+
+    printBalance()
+  })
+
+  it('Actor want to retrieve his donations', async () => {
+    let contract = await Benefactio.deployed()
+    timeTravel(90);
+
+    await contract.retrieveDonations(0, 0x123, { from: actor });
+    let project = await contract.projects(0)
+    assert.equal(project[7], true, "The project should be closed");
+
+    printBalance()
   })
 })

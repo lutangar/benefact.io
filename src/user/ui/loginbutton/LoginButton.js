@@ -1,12 +1,16 @@
 import React from 'react'
 
-// Images
-import uPortLogo from '../../../img/uport-logo.svg'
-
-const LoginButton = ({ onLoginUserClick }) => {
+const LoginButton = ({ account }) => {
   return (
     <li className='pure-menu-item'>
-      <a href='#' className='pure-menu-link' onClick={(event) => onLoginUserClick(event)}><img className='uport-logo' src={uPortLogo} alt='UPort Logo' />Login with UPort</a>
+      <a href='#' className='pure-menu-link'>
+        <img
+          className='uport-logo'
+          src={`https://eth.vanity.show/${account}`}
+          alt={`Identicon of ether address ${account}`}
+        />
+        {account}
+      </a>
     </li>
   )
 }

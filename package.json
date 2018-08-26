@@ -73,6 +73,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
+    "test-contracts": "truffle test",
     "standard": "standard --fix",
     "ganache": "ganache-cli",
     "compile": "truffle compile --reset --all",
