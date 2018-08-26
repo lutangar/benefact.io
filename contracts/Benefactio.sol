@@ -156,31 +156,31 @@ contract Benefactio is Token, Owned {
         return projectId;
     }
 
-    function projectApprove(uint projectNumber) onlyOwner external {
-        Project storage p = projects[projectNumber];
+    function projectApprove(uint projectId) onlyOwner external {
+        Project storage p = projects[projectId];
 
         require(p.approved == false);
         p.approved = true;
 
-        emit ProjectStatus(projectNumber, status);
+        emit ProjectStatus(projectId, status);
     }
 
     function checkProjectCode (
-        uint projectNumber,
+        uint projectId,
         address beneficiary,
         uint amount,
         bytes transactionBytecode
     ) constant external returns (bool code) {
-        Project storage p = projects[projectNumber];
+        Project storage p = projects[projectId];
         return p.projectHash == keccak256(abi.encodePacked(beneficiary, amount, transactionBytecode));
     }
 
     function makeDonation(
-        uint projectNumber,
+        uint projectId,
         string supportMessage
     ) external payable returns (uint donationId) {
         require(status = true);
-        Project storage p = projects[projectNumber];
+        Project storage p = projects[projectId];
 
         require(transfer(this, msg.value));
 
@@ -190,14 +190,14 @@ contract Benefactio is Token, Owned {
         p.currentAmount += msg.value;
         p.lastDonation = block.timestamp;
 
-        emit NewDonation(projectNumber, msg.sender, msg.value, supportMessage);
+        emit NewDonation(projectId, msg.sender, msg.value, supportMessage);
         return p.numberOfDonations;
     }
 
-    function retrieveDonations(uint projectNumber, bytes transactionBytecode) onlyBenefactors external payable {
+    function retrieveDonations(uint projectId, bytes transactionBytecode) onlyBenefactors external payable {
         require(status = true);
 
-        Project storage p = projects[projectNumber];
+        Project storage p = projects[projectId];
 
         require(
             p.closed == false &&
@@ -208,7 +208,7 @@ contract Benefactio is Token, Owned {
 
         if (p.currentAmount >= p.amount) {
             p.closed = true;
-            emit ProjectClosed(projectNumber, p.recipient, p.amount);
+            emit ProjectClosed(projectId, p.recipient, p.amount);
 
             // avoid reentrancy
             require(transferFrom(this, p.recipient, p.amount));
