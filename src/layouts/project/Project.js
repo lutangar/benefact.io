@@ -16,9 +16,9 @@ class Project extends Component {
       <main className='container'>
         <div className='pure-g'>
           <div className='pure-u-1-1'>
-            <h1>{this.props.projectName}</h1>
+            <h1>{this.props.name}</h1>
             <p>{this.props.description}</p>
-            <em>{this.props.currentAmount}/{this.props.amount}</em>
+            <em>{this.props.currentAmount} Wei collected on the {this.props.amount} required.</em>
             <dl>
               <dt>Closed</dt>
               <dd>{this.props.closed ? 'Yes' : 'No'}</dd>

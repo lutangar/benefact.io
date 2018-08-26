@@ -39,7 +39,6 @@ function * fetchDonationsSaga () {
 
 function * makeDonationSaga ({ payload, meta }) {
   try {
-    // console.log("caac");
     const contract = yield call(waitForContract)
     const from = yield select(getAccount)
     console.log(from)

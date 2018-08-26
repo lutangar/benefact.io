@@ -14,7 +14,7 @@ class Home extends Component {
             {this.props.hasProjects &&
               <ul>
                 {this.props.projects.map(project =>
-                  <li key={`project[${project.projectId}]`}><Link to={`/project/${project.projectHash}`}>{project.name}</Link></li>
+                  <li key={`project[${project.projectId}]`}><Link to={`/project/${project.projectId}`}>{project.name}</Link></li>
                 )}
               </ul>
             }

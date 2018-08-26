@@ -17,6 +17,7 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 import { isProviderLoaded } from './redux/selectors'
+import { getAccount } from './redux/selectors/accounts'
 
 class App extends Component {
   componentDidMount () {
@@ -48,8 +49,7 @@ class App extends Component {
         <nav className='navbar pure-menu pure-menu-horizontal'>
           <Link to='/' className='pure-menu-heading pure-menu-link'>Benefact.io</Link>
           <ul className='pure-menu-list navbar-right'>
-            <OnlyGuestLinks />
-            <OnlyAuthLinks />
+            {this.props.account && <OnlyGuestLinks />}
           </ul>
         </nav>
         {this.props.children}
@@ -59,4 +59,4 @@ class App extends Component {
   }
 }
 
-export default connect((state) => ({ providerLoaded: isProviderLoaded(state), notification: state.notification }), { fetchProjects, loadProvider })(App)
+export default connect((state) => ({ providerLoaded: isProviderLoaded(state), notification: state.notification, account: getAccount(state) }), { fetchProjects, loadProvider })(App)

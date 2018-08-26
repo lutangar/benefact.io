@@ -2,9 +2,9 @@
 <!-- What does your project do? -->
 Benefact.io is an online donation platform on the blockchain.
 
-There are a list of projects and their features, proposed by some users — *actors* — and some other users — *benefactors* — can choose to donate to these projects.
+There are a list of projects proposed by some users — *actors* — and some other users — *benefactors* — can donate to these projects.
 
-The list of projects is managed by the contract creator and all the *benefactors* at equal rights weight.
+The list of projects is managed by the contract creator.
 
 ## Install
 <!--
@@ -78,7 +78,7 @@ The quantity of the item in the store’s inventory will be reduced by the appro
 ## Testing
 
 ```
-truffle test
+npm run test-contracts
 ```
 
 ## Smart contracts

@@ -1,5 +1,4 @@
 import * as PROJECTS from '../../constants/projects'
-import { EVENT } from '../../../services/utils'
 
 export const fixtures = [
   {
@@ -42,17 +41,20 @@ export const fixtures = [
 
 export const initialState = {}
 
-const PROJECT_ADDED = EVENT('projectAdded')
-
 export default (state = initialState, action) => {
+  console.log(state)
   switch (action.type) {
     case PROJECTS.FETCH_PROJECT_SUCCESS:
-      return { ...state, [action.payload.projectId]: action.payload }
-    case PROJECT_ADDED:
-      return { ...state, [action.payload.projectId]: action.payload }
+    case PROJECTS.PROJECT_ADDED:
+      return { ...state, [action.payload.projectId]: { ...state[action.payload.projectId], ...action.payload }}
     case PROJECTS.FETCH_PROJECT_FAILURE:
       return state
+    case PROJECTS.PROJECT_CLOSED:
+      return { ...state, [action.payload.projectId]: { ...state[action.payload.projectId], closed: true } }
+    case PROJECTS.PROJECT_STATUS_CHANGED:
+      return { ...state, [action.payload.projectId]: { ...state[action.payload.projectId], ...action.payload } }
     default:
       return state
   }
+
 }
