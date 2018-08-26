@@ -19,7 +19,7 @@ function * fetchProjectsSaga () {
       while (i < projectsCount.toNumber()) {
         const project = yield call(contract.projects.call, i)
 
-        yield put(projectsActions.fetchProjectSuccess({ projectNumber: i, ...format(project) }))
+        yield put(projectsActions.fetchProjectSuccess({ projectId: i, ...format(project) }))
         i += 1
       }
 

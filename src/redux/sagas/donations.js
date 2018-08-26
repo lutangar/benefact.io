@@ -45,10 +45,10 @@ function * makeDonationSaga ({ payload, meta }) {
     console.log(from)
     console.log(payload)
     console.log(payload.value)
-    console.log(payload.projectNumber)
+    console.log(payload.projectId)
     console.log(payload.supportMessage)
 
-    yield call(contract.makeDonation, payload.projectNumber, payload.supportMessage)
+    yield call(contract.makeDonation, payload.projectId, payload.supportMessage)
 
     yield put(donationsActions.createDonationSuccess())
   } catch (e) {

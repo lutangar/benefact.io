@@ -43,12 +43,11 @@ export const fixtures = [
 export const initialState = {}
 
 const PROJECT_ADDED = EVENT('projectAdded')
-console.log(PROJECT_ADDED)
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case PROJECTS.FETCH_PROJECT_SUCCESS:
-      return { ...state, [action.payload.projectNumber]: action.payload }
+      return { ...state, [action.payload.projectId]: action.payload }
     case PROJECT_ADDED:
       return { ...state, [action.payload.projectId]: action.payload }
     case PROJECTS.FETCH_PROJECT_FAILURE:

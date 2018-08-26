@@ -25,7 +25,6 @@ class App extends Component {
   }
 
   render () {
-    console.log(this.props)
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
         <li className='pure-menu-item'>

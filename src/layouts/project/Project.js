@@ -36,7 +36,7 @@ class Project extends Component {
               <p>No benefactors have given to the <strong>{this.props.name}</strong> project so far.</p>
             }
             <h2>{this.hasDonations ? 'Donate' : 'Be the first to donate!'}</h2>
-            <DonationForm projectNumber={this.props.projectNumber} />
+            <DonationForm projectId={this.props.projectId} />
           </div>
         </div>
       </main>
