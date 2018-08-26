@@ -43,7 +43,7 @@ export const fixtures = [
 export const initialState = {}
 
 const PROJECT_ADDED = EVENT('projectAdded')
-console.log(PROJECT_ADDED);
+console.log(PROJECT_ADDED)
 
 export default (state = initialState, action) => {
   switch (action.type) {

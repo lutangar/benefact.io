@@ -6,5 +6,5 @@ import instance from './instance'
 export default combineReducers({
   deployed,
   watching,
-  instance,
+  instance
 })

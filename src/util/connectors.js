@@ -1,12 +1,12 @@
-import Eth from 'ethjs';
+import Eth from 'ethjs'
 import { Connect } from 'uport-connect'
 import config from '../../truffle'
 
-const { host, port } = config.networks.development;
+const { host, port } = config.networks.development
 
 export let uport = new Connect('TruffleBox')
 
-export const web3 = new Eth(new Eth.HttpProvider(`http://${host}:${port}`));
+export const web3 = new Eth(new Eth.HttpProvider(`http://${host}:${port}`))
 
 // || new Web3(new web3.providers.HttpProvider(`http://${host}:${port}`))
 

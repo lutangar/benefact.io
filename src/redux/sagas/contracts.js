@@ -1,4 +1,4 @@
-import { eventChannel } from 'redux-saga';
+import { eventChannel } from 'redux-saga'
 import { call, put, select, take } from 'redux-saga/effects'
 import { getProvider, isProviderLoaded } from '../selectors'
 import * as PROVIDER from '../constants/provider'
@@ -9,11 +9,11 @@ import { createContractEvent } from '../actions/events'
 import { watchContract } from '../actions/contracts'
 import * as CONTRACTS from '../constants/contracts'
 
-const gas = 3000000;
-const gasPrice = 10;
+const gas = 3000000
+const gasPrice = 10
 
 export function * waitForContract () {
-  const providerLoaded = yield select(isProviderLoaded);
+  const providerLoaded = yield select(isProviderLoaded)
   if (!providerLoaded) {
     yield take(PROVIDER.LOAD_PROVIDER_SUCCESS)
   }
@@ -21,35 +21,35 @@ export function * waitForContract () {
   const provider = yield select(getProvider)
   const from = yield select(getAccount)
 
-  const Benefactio = createBenefactioContract(provider);
+  const Benefactio = createBenefactioContract(provider)
   Benefactio.defaults({ from, gas, gasPrice })
 
-  const contractInstance = yield Benefactio.deployed();
+  const contractInstance = yield Benefactio.deployed()
 
   yield put(watchContract(contractInstance))
 
-  return contractInstance;
+  return contractInstance
 }
 
-export function createFilterChannel(filter) {
+export function createFilterChannel (filter) {
   return eventChannel(emit => {
     filter.watch((error, result) => {
       if (!error) {
-        emit(result);
+        emit(result)
       }
-    });
+    })
 
-    return () => filter.stopWatching();
-  });
+    return () => filter.stopWatching()
+  })
 }
 
-export function* watchContractEvents({ payload: contractInstance }) {
-  const eventFormatter = EVENT;
-  const filter = yield call(contractInstance.allEvents);
-  const filterChannel = yield call(createFilterChannel, filter);
+export function * watchContractEvents ({ payload: contractInstance }) {
+  const eventFormatter = EVENT
+  const filter = yield call(contractInstance.allEvents)
+  const filterChannel = yield call(createFilterChannel, filter)
 
   while (true) {
-    const payload = yield take(filterChannel);
+    const payload = yield take(filterChannel)
     const definition = getDefinition(payload.event)(contractInstance.abi)
 
     yield put(
@@ -58,13 +58,13 @@ export function* watchContractEvents({ payload: contractInstance }) {
         formatOutputs(definition.inputs)(payload.args),
         payload
       )
-    );
+    )
   }
 }
 
 export default function * createProjectRootSaga () {
   while (true) {
-    const action = yield take(CONTRACTS.WATCH_CONTRACT_REQUEST);
-    yield call(watchContractEvents, action);
+    const action = yield take(CONTRACTS.WATCH_CONTRACT_REQUEST)
+    yield call(watchContractEvents, action)
   }
 }

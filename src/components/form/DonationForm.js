@@ -12,7 +12,6 @@ export default class DonationForm extends PureComponent {
 
   onSubmit (payload) {
     return new Promise((resolve, reject) => {
-
       this.props.onSubmit({ ...payload, projectNumber: this.props.projectNumber }, { form: this.props.form, resolve, reject })
     }).then(this.props.resolve)
   }
@@ -22,7 +21,7 @@ export default class DonationForm extends PureComponent {
   }
 
   render () {
-    console.log(this.props);
+    console.log(this.props)
     return (
       <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
         {this.props.error &&

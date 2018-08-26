@@ -17,5 +17,5 @@ export default combineReducers({
   form,
   provider,
   accounts,
-  notification,
+  notification
 })

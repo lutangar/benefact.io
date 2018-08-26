@@ -7,7 +7,7 @@ const validate = (values) => {
   const requiredFields = [
     'goal',
     'name',
-    'description',
+    'description'
   ]
 
   requiredFields.forEach((requiredField) => {

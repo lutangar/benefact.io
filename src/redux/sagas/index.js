@@ -11,6 +11,6 @@ export default function * rootSaga () {
     fork(projects),
     fork(donations),
     fork(contracts),
-    fork(notification),
+    fork(notification)
   ]
 }

@@ -5,9 +5,9 @@ import { SHOW_NOTIFICATION } from '../constants/notification'
 import { hideNotificaiton } from '../actions/notification'
 
 export function * showNotificationSaga () {
-  yield delay(7000);
+  yield delay(7000)
 
-  yield put(hideNotificaiton());
+  yield put(hideNotificaiton())
 }
 
 export default function * createProviderSaga () {

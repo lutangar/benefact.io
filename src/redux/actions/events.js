@@ -1,4 +1,4 @@
-import { getChecksumAddress } from 'ethjs-account';
+import { getChecksumAddress } from 'ethjs-account'
 
 export const createContractEvent = (
   eventName,
@@ -14,6 +14,6 @@ export const createContractEvent = (
     removed,
     transactionHash,
     transactionIndex,
-    contract: getChecksumAddress(address),
-  },
-});
+    contract: getChecksumAddress(address)
+  }
+})

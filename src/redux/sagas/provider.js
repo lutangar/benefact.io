@@ -7,7 +7,7 @@ import getWeb3 from '../../services/getWeb3'
 export function * loadProviderSaga () {
   try {
     const web3 = yield getWeb3
-    const accounts = yield call(web3.accounts);
+    const accounts = yield call(web3.accounts)
     yield put(accountsActions.fetchAccountsSuccess(accounts))
 
     yield put(providerActions.loadProviderSuccess(web3.currentProvider))
