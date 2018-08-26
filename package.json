@@ -44,6 +44,7 @@
     "standard": "^11.0.1",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
+    "truffle": "^4.1.14",
     "truffle-contract": "^1.1.8",
     "url-loader": "0.5.7",
     "webpack": "1.14.0",
@@ -73,7 +74,9 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "standard": "standard --fix",
-    "ganache": "ganache-cli"
+    "ganache": "ganache-cli",
+    "compile": "truffle compile --reset --all",
+    "migrate": "truffle migrate --reset --all"
   },
   "jest": {
     "collectCoverageFrom": [

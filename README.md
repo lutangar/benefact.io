@@ -18,7 +18,6 @@ App runs without tweaking
 (can be localhost)"
 -->
 ```
-sudo npm install -g truffle
 npm install
 ```
 
@@ -32,11 +31,23 @@ npm install
 - Update reflected in UI
 -->
 
-1. Run
+1. Run a blockchain with ganache:
+```
+npm run ganache
+```
+
+2. Compile and migrate the contracts:
+```
+npm run compile
+npm run migrate
+```
+
+2. Run the app:
 ```
 npm start
 ```
-2. Visit http://localhost:3000
+
+3. Visit http://localhost:3000
 
 ## User stories
 
