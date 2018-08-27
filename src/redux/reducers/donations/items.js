@@ -28,14 +28,21 @@ export const fixtures = [
   }
 ]
 
-export const initialState = []
+export const donationInitialState = {}
+export const initialState = {}
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case DONATIONS.FETCH_DONATIONS_SUCCESS:
-      return action.payload
-    case DONATIONS.FETCH_DONATIONS_FAILURE:
-      return state
+    case DONATIONS.FETCH_DONATION_SUCCESS:
+    case DONATIONS.DONATION_CREATED:
+      return {
+        ...state,
+        [action.payload.donationId]: {
+          ...donationInitialState,
+          ...state[action.payload.donationId],
+          ...action.payload
+        }
+      }
     default:
       return state
   }

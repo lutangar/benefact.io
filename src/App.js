@@ -67,7 +67,7 @@ class App extends Component {
             {this.props.notification && <Notification>{this.props.notification}</Notification>}
           </div>
         ) : (
-          <div style={{ paddingTop: '65px', textAlign: 'center' }}><Warning>Sorry the platform is closed for now, wait for an <em>admin</em> to open it.</Warning></div>
+          <div style={{ paddingTop: '150px', textAlign: 'center' }}><Warning>Sorry the platform is closed for now, wait for an <em>admin</em> to open it.</Warning></div>
         )}
       </div>
     )

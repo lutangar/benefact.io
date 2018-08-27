@@ -23,15 +23,15 @@ pre {
 }
 
 .pure-button-primary {
-  background-color: #0c1a2b;
+  background-color: #F14C13;
 }
 
 .pure-button-primary:hover {
-  background-color: #233e5e;
+  background-color: #F5900E;
 }
 
 .pure-form input[type="text"]:focus {
-  border-color: #0c1a2b;
+  border-color: #F14C13;
 }
 
 /* NAVBAR */
@@ -39,7 +39,7 @@ pre {
 .navbar {
   position: fixed;
   padding: 5px;
-  background: #0c1a2b;
+  background: #F14C13;
   font-family: 'Oswald', 'Arial Narrow', sans-serif;
 }
 
@@ -50,7 +50,7 @@ pre {
 .navbar a:active,
 .navbar a:focus,
 .navbar a:hover {
-  background: #233e5e;
+  background: #F5900E;
 }
 
 .navbar .pure-menu-heading {
@@ -65,4 +65,20 @@ pre {
 .navbar .uport-logo {
   height: 16px;
   margin-right: 10px;
+}
+
+.button {
+  background: #F14C13;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.button:hover {
+  background: #F5900E;
+  cursor: hand;
 }

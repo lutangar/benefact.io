@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import Project from './Project'
-import { getProject } from '../../redux/selectors/projects'
+import { getId, getProject } from '../../redux/selectors/projects'
 import { getProjectDonations, areDonationsFetching, getProjectDonationsTotal, getProjectBenefactorsCount, hasProjectDonations } from '../../redux/selectors/donations'
 import { fetchDonations } from '../../redux/actions/donations'
-import { isOwner } from '../../redux/selectors'
+import { getOwner, isOwner } from '../../redux/selectors'
 import { getAccount } from '../../redux/selectors/accounts'
 
 export default connect((state, ownProps) => ({
@@ -14,5 +14,6 @@ export default connect((state, ownProps) => ({
   hasDonations: hasProjectDonations(state, ownProps),
   donationsFetching: areDonationsFetching(state, ownProps),
   account: getAccount(state, ownProps),
-  isOwner: isOwner(state)
+  isOwner: isOwner(state),
+  id: getId(state, ownProps)
 }), { fetchDonations })(Project)

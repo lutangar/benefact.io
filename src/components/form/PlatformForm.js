@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import Error from '../Error'
+import Button from '../Button'
 
 export default class PlatformForm extends PureComponent {
   constructor (props) {
@@ -30,7 +31,7 @@ export default class PlatformForm extends PureComponent {
         {this.props.error &&
         <Error>{this.props.error}</Error>
         }
-        <button type='submit' className='pure-menu-link' disabled={this.isButtonDisabled}>{this.props.open ? 'Close the platform' : 'Open the platform'}</button>
+        <Button type='submit' className='pure-menu-link' disabled={this.isButtonDisabled}>{this.props.open ? 'Close the platform' : 'Open the platform'}</Button>
       </form>
     )
   }

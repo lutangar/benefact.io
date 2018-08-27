@@ -53,7 +53,7 @@ contract Benefactio is Token, Owned {
     event ProjectAdded(uint projectId, address recipient, uint amount, string name, bool approved);
     event ProjectClosed(uint projectId, address recipient, uint amount);
     event ProjectStatus(uint projectId, bool approved);
-    event NewDonation(uint projectId, address benefactor, uint amount, string message);
+    event NewDonation(uint donationId, uint projectId, address benefactor, uint amount, string message);
     event ActorsChanged(address actor, bool isActor);
     event PlatformStatus(bool status);
 
@@ -162,8 +162,23 @@ contract Benefactio is Token, Owned {
         p.currentAmount += msg.value;
         p.lastDonation = block.timestamp;
 
-        emit NewDonation(projectId, msg.sender, msg.value, supportMessage);
+        emit NewDonation(donationId, projectId, msg.sender, msg.value, supportMessage);
         return p.numberOfDonations;
+    }
+
+    function getProjectDonationsCount(uint projectId) public constant returns (uint) {
+        Project storage p = projects[projectId];
+
+        return p.donations.length;
+    }
+
+    function getProjectDonation(uint projectId, uint donationId) public constant returns (address benefactor, uint amount, string message) {
+        Project storage p = projects[projectId];
+        Donation storage d = p.donations[donationId];
+
+        benefactor = d.benefactor;
+        amount = d.amount;
+        message = d.message;
     }
 
     function retrieveDonations(uint projectId, bytes transactionBytecode) external onlyActor(projectId) {

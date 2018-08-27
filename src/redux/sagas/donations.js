@@ -11,18 +11,18 @@ import { showNotificaiton } from '../actions/notification'
 const gas = 3000000
 const gasPrice = 10
 
-function * fetchDonationsSaga () {
+function * fetchDonationsSaga ({ payload }) {
   try {
-    const stale = yield select(donationSelectors.areDonationsStale)
+    // const stale = yield select(donationSelectors.areDonationsStale)
+    const stale = true;
     if (stale) {
       const contract = yield call(waitForContract)
-      const donationsCount = yield call(contract.numDonations.call)
-      const format = formatOutputs(getDefinition('donations')(contract.abi).outputs)
+      const donationsCount = yield call(contract.getProjectDonationsCount.call, payload)
+      const format = formatOutputs(getDefinition('getProjectDonation')(contract.abi).outputs)
       let i = 0
       while (i < donationsCount.toNumber()) {
-        const donation = yield call(contract.donations.call, i)
-
-        yield put(donationsActions.fetchDonationSuccess(format(donation)))
+        const donation = yield call(contract.getProjectDonation, payload, i)
+        yield put(donationsActions.fetchDonationSuccess({ projectId: payload, donationId: i, ...format(donation) }))
         i += 1
       }
 
@@ -45,13 +45,8 @@ function * makeDonationSaga ({ payload, meta }) {
   try {
     const contract = yield call(waitForContract)
     const from = yield select(getAccount)
-    console.log(from)
-    console.log(payload)
-    console.log(payload.value)
-    console.log(payload.projectId)
-    console.log(payload.supportMessage)
 
-    yield call(contract.makeDonation, payload.projectId, payload.supportMessage)
+    yield call(contract.makeDonation, payload.projectId, payload.supportMessage, { from, value: payload.value })
 
     yield put(donationsActions.createDonationSuccess())
     yield put(showNotificaiton('Thank you! Your donations will appeared as soon as the transaction is mined.'))

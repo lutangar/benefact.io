@@ -24,7 +24,7 @@ export default class Approve extends PureComponent {
         {this.props.error &&
         <Error>{this.props.error}</Error>
         }
-        <button type='submit' disabled={this.isButtonDisabled}>approve</button>
+        <button type='submit' disabled={this.isButtonDisabled}>Approve this project</button>
       </form>
     )
   }

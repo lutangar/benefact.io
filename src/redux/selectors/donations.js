@@ -2,12 +2,12 @@ import { createSelector } from 'reselect'
 import { getId as getProjectId, getLastFetched } from './projects'
 import { hoursToMilliseconds } from '../../services/utils'
 
-export const getDonations = state => state.donations.items
+export const getDonations = state => Object.values(state.donations.items)
 
 export const getProjectDonations = createSelector(
   getDonations,
   getProjectId,
-  (donations, projectId) => donations.filter(donation => donation.project === projectId)
+  (donations, projectId) => donations.filter(donation => donation.projectId === projectId)
 )
 
 export const getProjectDonationsTotal = createSelector(
