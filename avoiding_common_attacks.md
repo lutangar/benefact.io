@@ -1,13 +1,10 @@
 # Avoiding common attacks
 
-<!--
-Explains what measures you took to ensure that your contracts are not susceptible to common attacks.
-> (Module 9 Lesson 3)
-"Explain what measures they’ve taken
-to ensure that their contracts are not susceptible to
-common attacks"
+## Transaction Ordering and Timestamp Dependence
+A check has been added in `retrieveDonations` to ensure that some block confirmations occurred since the last donation,
+before claiming any.
 
-"The student expresses adequate
-knowledge about common attacks and has
-sufficiently guarded against them."
--->
+## Integer Overflow and Underflow
+`uint256` integers have been used over smaller ones that could easily reach their maximum value.
+Furthermore the `SafeMath` contract have been used instead of the low level arithmetic functions.
+integer overflow over uint to uint256
