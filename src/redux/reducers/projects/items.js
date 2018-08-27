@@ -42,7 +42,6 @@ export const fixtures = [
 export const initialState = {}
 
 export default (state = initialState, action) => {
-  console.log(state)
   switch (action.type) {
     case PROJECTS.FETCH_PROJECT_SUCCESS:
     case PROJECTS.PROJECT_ADDED:
@@ -53,8 +52,9 @@ export default (state = initialState, action) => {
       return { ...state, [action.payload.projectId]: { ...state[action.payload.projectId], closed: true } }
     case PROJECTS.PROJECT_STATUS_CHANGED:
       return { ...state, [action.payload.projectId]: { ...state[action.payload.projectId], ...action.payload } }
+    case PROJECTS.APPROVE_PROJECT_SUCCESS:
+      return { ...state, [action.payload.projectId]: { ...state[action.payload], approved: true } }
     default:
       return state
   }
-
 }

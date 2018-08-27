@@ -1,6 +1,6 @@
 import { getChecksumAddress } from 'ethjs-account'
 
-export const formatErrors = error => error
+export const formatErrors = error => ({ _error: error.message })
 export const hoursToMilliseconds = hours => Number(hours) * 60 * 60 * 1000
 
 const isBigNumber = arg => arg && arg.toNumber

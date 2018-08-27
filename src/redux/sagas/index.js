@@ -4,6 +4,7 @@ import projects from './projects'
 import donations from './donations'
 import contracts from './contracts'
 import notification from './notification'
+import platform from './platform'
 
 export default function * rootSaga () {
   yield [
@@ -11,6 +12,7 @@ export default function * rootSaga () {
     fork(projects),
     fork(donations),
     fork(contracts),
-    fork(notification)
+    fork(notification),
+    fork(platform),
   ]
 }

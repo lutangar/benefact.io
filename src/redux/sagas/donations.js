@@ -6,6 +6,10 @@ import * as donationSelectors from '../selectors/donations'
 import { formatErrors, formatOutputs, getDefinition } from '../../services/utils'
 import { waitForContract } from './contracts'
 import { getAccount } from '../selectors/accounts'
+import { showNotificaiton } from '../actions/notification'
+
+const gas = 3000000
+const gasPrice = 10
 
 function * fetchDonationsSaga () {
   try {
@@ -50,6 +54,8 @@ function * makeDonationSaga ({ payload, meta }) {
     yield call(contract.makeDonation, payload.projectId, payload.supportMessage)
 
     yield put(donationsActions.createDonationSuccess())
+    yield put(showNotificaiton('Thank you! Your donations will appeared as soon as the transaction is mined.'))
+    yield call(meta.resolve)
   } catch (e) {
     console.log(e)
     yield put(donationsActions.createDonationFailure(e))

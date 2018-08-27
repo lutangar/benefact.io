@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import DonationForm from '../../components/form/DonationFormContainer'
 import Loader from '../../components/Loader'
+import Warning from '../../components/Warning'
+import ApproveForm from '../../components/form/ApproveFormContainer'
 
 class Project extends Component {
   componentDidMount () {
@@ -36,7 +38,14 @@ class Project extends Component {
               <p>No benefactors have given to the <strong>{this.props.name}</strong> project so far.</p>
             }
             <h2>{this.hasDonations ? 'Donate' : 'Be the first to donate!'}</h2>
-            <DonationForm projectId={this.props.projectId} />
+            {this.props.approved ? (
+              <DonationForm projectId={this.props.projectId}/>
+            ) : (
+              <div>
+                  <Warning>This project must be approved to receive donations.</Warning>
+                  {this.props.isOwner && <p> Hey <em>owner</em> would you like to <ApproveForm projectId={this.props.projectId} /> this project?</p>}
+              </div>
+            )}
           </div>
         </div>
       </main>
