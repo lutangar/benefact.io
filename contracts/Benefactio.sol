@@ -50,9 +50,9 @@ contract Benefactio is Token, Owned {
 
     Project[] public projects;
 
-    event ProjectAdded(uint projectId, address recipient, uint amount, string name, bool projectStatus);
+    event ProjectAdded(uint projectId, address recipient, uint amount, string name, bool approved);
     event ProjectClosed(uint projectId, address recipient, uint amount);
-    event ProjectStatus(uint projectId, bool projectStatus);
+    event ProjectStatus(uint projectId, bool approved);
     event NewDonation(uint projectId, address benefactor, uint amount, string message);
     event ActorsChanged(address actor, bool isActor);
     event PlatformStatus(bool status);
