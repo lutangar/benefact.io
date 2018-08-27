@@ -1,10 +1,7 @@
 const { assertRevert } = require('./helpers/assertRevert')
 const expectEvent = require('./helpers/expectEvent')
-let BigNumber = require('../node_modules/bignumber.js')
 
-let Benefactio = artifacts.require('./Benefactio.sol'),
-  Owned = artifacts.require('./basic/Owned.sol'),
-  SafeMath = artifacts.require('./library/SafeMath.sol')
+const Benefactio = artifacts.require('./Benefactio.sol')
 
 let eth = web3.eth,
   owner = eth.accounts[0],

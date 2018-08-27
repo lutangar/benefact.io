@@ -6,8 +6,9 @@ import { getAccount } from '../selectors/accounts'
 import createBenefactioContract from '../../services/contracts/Benefactio'
 import { EVENT, formatOutputs, getDefinition } from '../../services/utils'
 import { createContractEvent } from '../actions/events'
-import { watchContract } from '../actions/contracts'
+import { fetchOwner, fetchOwnerFailure, fetchOwnerSuccess, watchContract } from '../actions/contracts'
 import * as CONTRACTS from '../constants/contracts'
+import { getChecksumAddress } from 'ethjs-account'
 
 const gas = 3000000
 const gasPrice = 10
@@ -27,6 +28,7 @@ export function * waitForContract () {
   const contractInstance = yield Benefactio.deployed()
 
   yield put(watchContract(contractInstance))
+  yield put(fetchOwner(contractInstance))
 
   return contractInstance
 }
@@ -66,5 +68,22 @@ export default function * createProjectRootSaga () {
   while (true) {
     const action = yield take(CONTRACTS.WATCH_CONTRACT_REQUEST)
     yield call(watchContractEvents, action)
+  }
+}
+
+export function * fetchOwnerSaga ({ payload: contractInstance }) {
+  try {
+    const owner = yield call(contractInstance.owner)
+
+    yield put(fetchOwnerSuccess(getChecksumAddress(owner)))
+  } catch (e) {
+    yield put(fetchOwnerFailure())
+  }
+}
+
+export function * watchFetchOwnerSaga () {
+  while (true) {
+    const action = yield take(CONTRACTS.FETCH_OWNER_REQUEST)
+    yield call(fetchOwnerSaga, action)
   }
 }
