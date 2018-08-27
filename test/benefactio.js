@@ -78,7 +78,7 @@ contract('Benefactio', function (accounts) {
     let contract = await Benefactio.deployed()
     await contract.newProject(1000, 'test', 'test', 0x123, { from: actor })
     const project = await contract.projects(0)
-    assert.equal(project[0], actor, "Address should be the actor one");
+    assert.equal(project[0], actor, 'Address should be the actor one')
   })
 
   it('A project should be activated before donation', async () => {
@@ -97,29 +97,29 @@ contract('Benefactio', function (accounts) {
 
     printBalance()
 
-    await contract.makeDonation(0, "This is a support message", { from: benefactor1, value: 100 })
+    await contract.makeDonation(0, 'This is a support message', { from: benefactor1, value: 100 })
 
     let project = await contract.projects(0)
-    assert.equal(project[6].toNumber(), 100, "The project should contain 100 wei")
-    assert.equal(project[5].toNumber(), 1, "The project should have one donation")
+    assert.equal(project[6].toNumber(), 100, 'The project should contain 100 wei')
+    assert.equal(project[5].toNumber(), 1, 'The project should have one donation')
 
     printBalance()
 
-    await contract.makeDonation(0, "This is a support message", { from: benefactor2, value: 900})
+    await contract.makeDonation(0, 'This is a support message', { from: benefactor2, value: 900})
     project = await contract.projects(0)
-    assert.equal(project[6].toNumber(), 1000, "The project should contain 1000 wei")
-    assert.equal(project[5].toNumber(), 2, "The project should have one donation")
+    assert.equal(project[6].toNumber(), 1000, 'The project should contain 1000 wei')
+    assert.equal(project[5].toNumber(), 2, 'The project should have one donation')
 
     printBalance()
   })
 
   it('Actor want to retrieve his donations', async () => {
     let contract = await Benefactio.deployed()
-    timeTravel(90);
+    timeTravel(90)
 
-    await contract.retrieveDonations(0, 0x123, { from: actor });
+    await contract.retrieveDonations(0, 0x123, { from: actor })
     let project = await contract.projects(0)
-    assert.equal(project[7], true, "The project should be closed");
+    assert.equal(project[7], true, 'The project should be closed')
 
     printBalance()
   })

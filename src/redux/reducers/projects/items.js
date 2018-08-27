@@ -43,7 +43,7 @@ export const projectInitialState = {
   currentAmount: 0,
   approved: false,
   closed: false,
-  benefactors: {},
+  benefactors: {}
 }
 
 export const initialState = {}
@@ -57,7 +57,7 @@ export default (state = initialState, action) => {
         [action.payload.projectId]: {
           ...projectInitialState,
           ...state[action.payload.projectId],
-          ...action.payload,
+          ...action.payload
         }
       }
     case PROJECTS.FETCH_PROJECT_FAILURE:

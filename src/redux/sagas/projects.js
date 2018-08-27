@@ -12,7 +12,7 @@ function * fetchProjectsSaga () {
     const stale = yield select(projectSelectors.areProjectsStale)
     if (stale) {
       const contract = yield call(waitForContract)
-      console.log(contract);
+      console.log(contract)
       const projectsCount = yield call(contract.numProjects.call)
       const format = formatOutputs(getDefinition('projects')(contract.abi).outputs)
       let i = 0

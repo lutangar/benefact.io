@@ -79,5 +79,5 @@ export default connect((state) => ({
   notification: state.notification,
   account: getAccount(state),
   open: isOpen(state),
-  isOwner: isOwner(state),
+  isOwner: isOwner(state)
 }), { fetchProjects, loadProvider, fetchPlatformStatus })(App)

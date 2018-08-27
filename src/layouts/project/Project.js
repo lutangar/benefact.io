@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import DonationForm from '../../components/form/DonationFormContainer'
 import Loader from '../../components/Loader'
 import Warning from '../../components/Warning'
+import Success from '../../components/Success'
 import ApproveForm from '../../components/form/ApproveFormContainer'
 
 class Project extends Component {
@@ -13,7 +14,7 @@ class Project extends Component {
     return !this.props.donationsFetching && this.props.donations.length > 0
   }
 
-  get isProjectOwner() {
+  get isProjectOwner () {
     return this.props.recipient === this.props.account
   }
 
@@ -23,8 +24,11 @@ class Project extends Component {
         <div className='pure-g'>
           <div className='pure-u-1-1'>
             <h2>{this.props.name}</h2>
+            {this.props.isFunded &&
+            <Success>This Project has been funded, thank you to all the <em>benefactors</em>!</Success>
+            }
             <p>{this.props.description}</p>
-            <em>{this.props.currentAmount} Wei collected on the {this.props.amount} required.</em>
+            <em>{this.props.donationsTotal} Wei collected on the {this.props.amount} required.</em>
             <dl>
               <dt>Closed</dt>
               <dd>{this.props.closed ? 'Yes' : 'No'}</dd>
@@ -47,23 +51,25 @@ class Project extends Component {
             </div>}
             {this.props.donationsFetching && <Loader />}
             {!this.hasDonations &&
-              <p>No benefactors have given to the <strong>{this.props.name}</strong> project so far.</p>
+              <p>No benefactors gave to the <strong>{this.props.name}</strong> project so far.</p>
             }
-            <h2>{this.hasDonations ? 'Donate' : 'Be the first to donate!'}</h2>
-            {this.props.approved ? (
-              <div>
-
-                {!this.isProjectOwner ? (
-                  <DonationForm projectId={this.props.projectId} />
-                ) : (<Warning>You can't donate to your own project ;)</Warning>)}
-              </div>
-            ) : (
-              <div>
+            {!this.props.isFunded &&
+            <div>
+              <h2>{this.hasDonations ? 'Donate' : 'Be the first to donate!'}</h2>
+              {this.props.approved ? (
+                <div>
+                  {!this.isProjectOwner && !this.props.isFunded && <DonationForm projectId={this.props.projectId}/>}
+                  {this.isProjectOwner && !this.props.isFunded &&
+                  <Warning>You can't donate to your own project ;)</Warning>}
+                </div>
+              ) : (
+                <div>
                   <Warning>This project must be approved to receive donations.</Warning>
-                  {this.props.isOwner && <ApproveForm projectId={this.props.projectId} /> }
-              </div>
-            )}
-
+                  {this.props.isOwner && <ApproveForm projectId={this.props.projectId}/>}
+                </div>
+              )}
+            </div>
+            }
           </div>
         </div>
       </main>

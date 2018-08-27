@@ -14,7 +14,7 @@ const gasPrice = 10
 function * fetchDonationsSaga ({ payload }) {
   try {
     // const stale = yield select(donationSelectors.areDonationsStale)
-    const stale = true;
+    const stale = true
     if (stale) {
       const contract = yield call(waitForContract)
       const donationsCount = yield call(contract.getProjectDonationsCount.call, payload)
