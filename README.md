@@ -32,6 +32,16 @@ npm start
 
 3. Visit http://localhost:3000
 
+## Test
+1. Start a ganache blockchain:
+```
+npm run ganache
+```
+2. Run the tests
+```
+npm run test-contracts
+```
+
 ## User stories
 
 When the **owner** deploy the contract the platform is closed.
