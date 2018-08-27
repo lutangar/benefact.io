@@ -78,7 +78,7 @@ contract('Benefactio', function (accounts) {
     let contract = await Benefactio.deployed()
     await contract.newProject(1000, 'test', 'test', 0x123, { from: actor })
 
-    assert.equal((await contract.projects(0))[0], actor, "Address should be the actor one");
+    assert.equal((await contract.projects(0))[0], actor.address, "Address should be the actor one");
   })
 
   it('A project should be activated before donation', async () => {
@@ -100,14 +100,15 @@ contract('Benefactio', function (accounts) {
     await contract.makeDonation(0, "This is a support message", { from: benefactor1, value: 100 })
 
     let project = await contract.projects(0)
-    //assert.equal(project[1], 100, "The project should contain 100 wei")
-    //assert.equal(project[5], 1, "The project should have one donation")
+    assert.equal(project[6].toNumber(), 100, "The project should contain 100 wei")
+    assert.equal(project[5].toNumber(), 1, "The project should have one donation")
 
     printBalance()
 
-    await contract.makeDonation(0, "This is a support message", { from: benefactor2, value: 900 })
-    //assert.equal(project[1], 1000, "The project should contain 100 wei")
-    //assert.equal(project[5], 2, "The project should have two donation")
+    await contract.makeDonation(0, "This is a support message", { from: benefactor2, value: 900})
+    project = await contract.projects(0)
+    assert.equal(project[6].toNumber(), 1000, "The project should contain 1000 wei")
+    assert.equal(project[5].toNumber(), 2, "The project should have one donation")
 
     printBalance()
   })
