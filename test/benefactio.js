@@ -77,8 +77,8 @@ contract('Benefactio', function (accounts) {
   it('An ethereum address add a new project', async () => {
     let contract = await Benefactio.deployed()
     await contract.newProject(1000, 'test', 'test', 0x123, { from: actor })
-
-    assert.equal((await contract.projects(0))[0], actor.address, "Address should be the actor one");
+    const project = await contract.projects(0)
+    assert.equal(project[0], actor, "Address should be the actor one");
   })
 
   it('A project should be activated before donation', async () => {
