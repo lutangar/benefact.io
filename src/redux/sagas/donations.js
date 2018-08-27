@@ -8,9 +8,6 @@ import { waitForContract } from './contracts'
 import { getAccount } from '../selectors/accounts'
 import { showNotificaiton } from '../actions/notification'
 
-const gas = 3000000
-const gasPrice = 10
-
 function * fetchDonationsSaga ({ payload }) {
   try {
     // const stale = yield select(donationSelectors.areDonationsStale)
@@ -58,7 +55,23 @@ function * makeDonationSaga ({ payload, meta }) {
   }
 }
 
+function * claimDonationSaga ({ payload, meta }) {
+  try {
+    const contract = yield call(waitForContract)
+
+    yield call(contract.retrieveDonations, payload, 0x0)
+
+    yield put(donationsActions.claimDonationsSuccess())
+    yield put(showNotificaiton('Your donations have been claimed with success. You balance will be credited shortly.'))
+    yield call(meta.resolve)
+  } catch (e) {
+    yield put(donationsActions.claimDonationsFailure(e))
+    yield call(meta.reject, new SubmissionError(formatErrors(e)))
+  }
+}
+
 export default function * createDonationRootSaga () {
   yield takeLatest(DONATIONS.FETCH_DONATIONS_REQUEST, fetchDonationsSaga)
   yield takeLatest(DONATIONS.CREATE_DONATION_REQUEST, makeDonationSaga)
+  yield takeLatest(DONATIONS.CLAIM_DONATIONS_REQUEST, claimDonationSaga)
 }

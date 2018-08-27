@@ -17,3 +17,11 @@ export const fetchDonations = createAction(DONATIONS.FETCH_DONATIONS_REQUEST)
 export const fetchDonationsSuccess = createAction(DONATIONS.FETCH_DONATIONS_SUCCESS)
 export const fetchDonationsFailure = createAction(DONATIONS.FETCH_DONATIONS_FAILURE)
 export const cancelFetchDonations = createAction(DONATIONS.FETCH_DONATIONS_CANCEL)
+
+export const claimDonations = (payload, meta) => ({
+  type: DONATIONS.CLAIM_DONATIONS_REQUEST,
+  payload,
+  meta
+})
+export const claimDonationsSuccess = createAction(DONATIONS.CLAIM_DONATIONS_SUCCESS)
+export const claimDonationsFailure = createAction(DONATIONS.CLAIM_DONATIONS_FAILURE)

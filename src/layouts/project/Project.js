@@ -4,6 +4,7 @@ import Loader from '../../components/Loader'
 import Warning from '../../components/Warning'
 import Success from '../../components/Success'
 import ApproveForm from '../../components/form/ApproveFormContainer'
+import ClaimDonationsForm from '../../components/form/ClaimDonationsFormContainer'
 
 class Project extends Component {
   componentDidMount () {
@@ -25,11 +26,17 @@ class Project extends Component {
           <div className='pure-u-1-1'>
             <h2>{this.props.name}</h2>
             {this.props.isFunded &&
-            <Success>This Project has been funded, thank you to all the <em>benefactors</em>!</Success>
+              <div>
+                <Success>Project has been successfully funded, thank you to all the <em>benefactors</em>!</Success>
+                {!this.props.closed && <ClaimDonationsForm projectId={this.props.projectId} />}
+              </div>
             }
             <p>{this.props.description}</p>
             <em>{this.props.donationsTotal} Wei collected on the {this.props.amount} required.</em>
             <dl>
+              <dt>Actor</dt>
+              <dd>{this.props.recipient}</dd>
+
               <dt>Closed</dt>
               <dd>{this.props.closed ? 'Yes' : 'No'}</dd>
 
