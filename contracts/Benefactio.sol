@@ -1,47 +1,11 @@
 pragma solidity ^0.4.24;
 
 import './library/SafeMath.sol';
-import './basic/Owned.sol';
+import './Owned.sol';
+import './Token.sol';
 
-contract Token {
-    using SafeMath for uint;
-
-    event Transfer(address indexed _from, address indexed _to, uint _tokens);
-
-    // ------------------------------------------------------------------------
-    // Transfer the balance from token owner's account to `to` account
-    // - Owner's account must have sufficient balance to transfer
-    // ------------------------------------------------------------------------
-    function transfer(address to, uint tokens) internal returns (bool success) {
-        require(tokens > 0);
-
-        msg.sender.balance.sub(tokens);
-        to.balance.add(tokens);
-
-        emit Transfer(msg.sender, to, tokens);
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-    // Transfer `tokens` from contract to the `to` account
-    //
-    // The calling account must already have sufficient tokens approve(...)-d
-    // for spending from the `from` account and
-    // - Contract must have sufficient balance to transfer
-    // - Spender must have sufficient allowance to transfer
-    // ------------------------------------------------------------------------
-    function transferDonation(address to, uint tokens) internal returns (bool success) {
-        require(tokens > 0);
-
-        address(this).balance.sub(tokens);
-        to.balance.add(tokens);
-        to.transfer(tokens);
-
-        emit Transfer(this, to, tokens);
-        return true;
-    }
-}
-
+/// @title Benefact.io is a donation platform
+/// @author Johan Dufour
 contract Benefactio is Token, Owned {
     uint public numProjects;
     bool public status;
@@ -83,26 +47,34 @@ contract Benefactio is Token, Owned {
         string message;
     }
 
+    /// @notice The constructor :)
     constructor() public {
+        // the platform is closed by default
         close();
     }
 
+    /// @notice The platform can be opened or closed to business, forbidding methods that write to the contract's storage
     function open() onlyOwner external {
         status = true;
         emit PlatformStatus(true);
     }
 
+    /// @notice The platform can be opened or closed to business, forbidding methods that write to the contract's storage
     function close() onlyOwner public {
         status = false;
         emit PlatformStatus(false);
     }
 
+    /// @notice Create a new project
+    /// @param amount The amount of Wei required to fulfill the project (the goal)
+    /// @param projectName The name of the project
+    /// @param projectDescription The name project description
     function newProject(
         uint amount,
         string projectName,
-        string projectDescription,
-        bytes transactionBytecode
+        string projectDescription
     ) external returns (uint projectId) {
+        // the platform must be open for business
         require(status = true);
 
         projectId = projects.length++;
@@ -112,7 +84,7 @@ contract Benefactio is Token, Owned {
         p.amount = amount * 1 wei;
         p.name = projectName;
         p.description = projectDescription;
-        p.projectHash = keccak256(abi.encodePacked(msg.sender, amount, transactionBytecode));
+        p.projectHash = keccak256(abi.encodePacked(msg.sender, amount, projectName));
         p.closed = false;
         p.approved = false;
 
@@ -122,34 +94,46 @@ contract Benefactio is Token, Owned {
         return projectId;
     }
 
+    /// @notice Approve a project, a project must be approved by the owner before receiving any donations
+    /// @param projectId The project id
     function projectApprove(uint projectId) onlyOwner external {
         Project storage p = projects[projectId];
 
+        // the project mustn't be approved already
         require(p.approved == false);
         p.approved = true;
 
         emit ProjectStatus(projectId, status);
     }
 
-    function checkProjectCode (
+    /// @notice Verify the project integrity by recomputing its hash
+    /// @param projectId The project id
+    /// @param recipient The project creator
+    /// @param amount The goal in Wei of the project
+    /// @param name The name of the project
+    function checkProjectHash (
         uint projectId,
-        address beneficiary,
+        address recipient,
         uint amount,
-        bytes transactionBytecode
+        string name
     ) constant external returns (bool code) {
         Project storage p = projects[projectId];
-        return p.projectHash == keccak256(abi.encodePacked(beneficiary, amount, transactionBytecode));
+        return p.projectHash == keccak256(abi.encodePacked(recipient, amount, name));
     }
 
+    /// @notice Make a new donation to an existing project
+    /// @param projectId The project id
+    /// @param supportMessage A supportive message for the project creator
     function makeDonation(
         uint projectId,
         string supportMessage
     ) external payable returns (uint donationId) {
+        // the platform must be open for business
         require(status = true);
         Project storage p = projects[projectId];
 
         require(
-            msg.sender != p.recipient &&
+            msg.sender != p.recipient && // the sender can't make a donation to himself
             p.amount >= p.currentAmount &&
             p.approved == true &&
             p.closed == false &&
@@ -166,12 +150,17 @@ contract Benefactio is Token, Owned {
         return p.numberOfDonations;
     }
 
+    /// @notice Get the number of donations on a project
+    /// @param projectId The project id
     function getProjectDonationsCount(uint projectId) public constant returns (uint) {
         Project storage p = projects[projectId];
 
         return p.donations.length;
     }
 
+    /// @notice Get a donation on a project
+    /// @param projectId The project id
+    /// @param donationId The donation id, start at 0
     function getProjectDonation(uint projectId, uint donationId) public constant returns (address benefactor, uint amount, string message) {
         Project storage p = projects[projectId];
         Donation storage d = p.donations[donationId];
@@ -181,15 +170,18 @@ contract Benefactio is Token, Owned {
         message = d.message;
     }
 
-    function retrieveDonations(uint projectId, bytes transactionBytecode) external onlyActor(projectId) {
+    /// @notice For a project creator only, claim the donations when the goal is reached
+    /// @param projectId The project id
+    function retrieveDonations(uint projectId) external onlyActor(projectId) {
+        // the platform must be open for business
         require(status = true);
 
         Project storage p = projects[projectId];
 
         require(
             p.closed == false &&
-            now > p.lastDonation + uint8(90) && // 6 blocks between last donation and retrieve
-            p.projectHash == keccak256(abi.encodePacked(p.recipient, p.amount, transactionBytecode))
+            now > p.lastDonation + uint8(30) && // 2 blocks between must have passed between the last donation and the claim
+            p.projectHash == keccak256(abi.encodePacked(p.recipient, p.amount, p.name))
         );
 
         if (p.currentAmount >= p.amount) {
@@ -200,7 +192,7 @@ contract Benefactio is Token, Owned {
         }
     }
 
-    // fallback just in case
+    /// @notice Fallback when nothing else match
     function () public {
         revert();
     }
