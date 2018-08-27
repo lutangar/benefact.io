@@ -59,7 +59,7 @@ function * claimDonationSaga ({ payload, meta }) {
   try {
     const contract = yield call(waitForContract)
 
-    yield call(contract.retrieveDonations, payload, 0x0)
+    yield call(contract.retrieveDonations, payload)
 
     yield put(donationsActions.claimDonationsSuccess())
     yield put(showNotificaiton('Your donations have been claimed with success. You balance will be credited shortly.'))

@@ -42,7 +42,7 @@ function * createProjectSaga ({ payload, meta }) {
   try {
     const contract = yield call(waitForContract)
 
-    yield call(contract.newProject, payload.goal, payload.name, payload.description, 0x0)
+    yield call(contract.newProject, payload.goal, payload.name, payload.description)
 
     yield put(projectsActions.createProjectSuccess())
     yield put(showNotificaiton('Your project has been submitted with success, it will appears in the list as soon as your transaction is mined.'))
