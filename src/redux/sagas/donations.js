@@ -29,7 +29,6 @@ function * fetchDonationsSaga ({ payload }) {
       yield put(donationsActions.fetchDonationsSuccess(lastFetched))
     }
   } catch (e) {
-    console.log(e)
     yield put(donationsActions.fetchDonationsFailure(e))
   } finally {
     if (yield cancelled()) {
@@ -49,7 +48,6 @@ function * makeDonationSaga ({ payload, meta }) {
     yield put(showNotificaiton('Thank you! Your donations will appeared as soon as the transaction is mined.'))
     yield call(meta.resolve)
   } catch (e) {
-    console.log(e)
     yield put(donationsActions.createDonationFailure(e))
     yield call(meta.reject, new SubmissionError(formatErrors(e)))
   }

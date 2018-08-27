@@ -9,9 +9,6 @@ const toObject = (definition, args = []) =>
   Object.assign(...args.map((output, i) => ({ [definition[i].name]: output })))
 
 export const formatOutput = ({ type, name }) => output => {
-  console.log(output)
-  console.log(type, name)
-  console.log('name', name)
   if (typeof output === 'undefined') {
     throw new TypeError(`${name} should be a ${type}, but received 'undefined' instead.`)
   }
@@ -36,8 +33,7 @@ export const formatOutputs = (definition = []) => outputs => {
   if (definition.length === 0) {
     return outputs
   }
-  console.log(definition)
-  console.log(outputs)
+
   if (definition.length === 1) {
     const scalarOutput =
       outputs instanceof Object && !isBigNumber(outputs) ? outputs[definition[0].name] : outputs

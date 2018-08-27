@@ -14,7 +14,6 @@ function * fetchPlatformsStatusSaga () {
 
     yield put(platformActions.fetchPlatformStatusSuccess(status))
   } catch (e) {
-    console.log(e)
     yield put(platformActions.fetchPlatformStatusFailure(e))
   }
 }

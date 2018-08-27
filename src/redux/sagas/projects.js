@@ -12,7 +12,6 @@ function * fetchProjectsSaga () {
     const stale = yield select(projectSelectors.areProjectsStale)
     if (stale) {
       const contract = yield call(waitForContract)
-      console.log(contract)
       const projectsCount = yield call(contract.numProjects.call)
       const format = formatOutputs(getDefinition('projects')(contract.abi).outputs)
       let i = 0
@@ -29,7 +28,6 @@ function * fetchProjectsSaga () {
       yield put(projectsActions.fetchProjectsSuccess(lastFetched))
     }
   } catch (e) {
-    console.log(e)
     yield put(projectsActions.fetchProjectsFailure(e))
   } finally {
     if (yield cancelled()) {
