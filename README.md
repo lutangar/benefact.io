@@ -51,12 +51,12 @@ The owner **owner** may close and open the platform at any time.
 
 *Once the platform has been opened for business:*
 
-A **user** can opens the web app and see list of existing projects.
+A **user** can opens the web app and see a list of existing projects.
 A user can create a new project by using the *"Submit your project"* form and see its project added to the list.
 By clicking on its project in the list, the user can the page of its project.
 A user **may not** contribute to its **own** project.
 
-Before any **user** can contribute to a project the **owner* must approve the project.
+Before any **user** can contribute to a project the **owner** must approve the project.
 When visiting a project page the **owner** may decide to click on the *"Approve the project"* button to do so.
 
 When visiting an approved project page a **user** may donate to a project by filling the appropriate form.
