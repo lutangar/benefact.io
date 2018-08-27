@@ -28,7 +28,7 @@ class Project extends Component {
             {this.props.isFunded &&
               <div>
                 <Success>Project has been successfully funded, thank you to all the <em>benefactors</em>!</Success>
-                {!this.props.closed && <ClaimDonationsForm projectId={this.props.projectId} />}
+                {!this.props.closed && this.isProjectOwner && <ClaimDonationsForm projectId={this.props.projectId} />}
               </div>
             }
             <p>{this.props.description}</p>

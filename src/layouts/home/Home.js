@@ -9,6 +9,7 @@ class Home extends Component {
       <main className='container'>
         <div className='pure-g'>
           <div className='pure-u-1-1'>
+            <p>Benefact.io is an online donation platform on the blockchain.</p>
             <h3>Projects</h3>
             {this.props.projectsFetching && <Loader /> }
             {this.props.hasProjects &&

@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 import Notification from './components/Notification'
 import Warning from './components/Warning'
 
 // UI Components
-import LoginButtonContainer from './user/ui/loginbutton/LoginButtonContainer'
-import LogoutButtonContainer from './user/ui/logoutbutton/LogoutButtonContainer'
+import LoginButtonContainer from './components/user/LoginButtonContainer'
 
 import { loadProvider } from './redux/actions/provider'
 import { fetchProjects } from './redux/actions/projects'
@@ -30,24 +28,6 @@ class App extends Component {
   }
 
   render () {
-    const OnlyAuthLinks = VisibleOnlyAuth(() =>
-      <span>
-        <li className='pure-menu-item'>
-          <Link to='/dashboard' className='pure-menu-link'>Dashboard</Link>
-        </li>
-        <li className='pure-menu-item'>
-          <Link to='/profile' className='pure-menu-link'>Profile</Link>
-        </li>
-        <LogoutButtonContainer />
-      </span>
-    )
-
-    const OnlyGuestLinks = HiddenOnlyAuth(() =>
-      <span>
-        <LoginButtonContainer />
-      </span>
-    )
-
     return (
       <div className='App'>
         <nav className='navbar pure-menu pure-menu-horizontal'>
@@ -58,7 +38,7 @@ class App extends Component {
                 <PlatformForm open={this.props.open} />
               </li>
             }
-            {this.props.account && <OnlyGuestLinks />}
+            {this.props.account && <span><LoginButtonContainer /></span>}
           </ul>
         </nav>
         {this.props.open ? (
